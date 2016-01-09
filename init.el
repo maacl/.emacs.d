@@ -6,7 +6,7 @@
   (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
 )
 (if (eq system-type 'gnu/linux)
-  (require 'cask "~/.cask/cask.el"
+  (require 'cask "~/.cask/cask.el")
 )
 
 (cask-initialize)
