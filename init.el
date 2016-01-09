@@ -2,7 +2,13 @@
 (require 'package)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
-(require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
+(if (eq system-type 'darwin)
+  (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
+)
+(if (eq system-type 'gnu/linux)
+  (require 'cask "~/.cask/cask.el"
+)
+
 (cask-initialize)
 (require 'pallet)
 (pallet-mode t)
