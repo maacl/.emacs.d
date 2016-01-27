@@ -2,6 +2,14 @@
 (require 'package)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
+
+(let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
+  (setenv "PATH" path)
+  (setq exec-path 
+        (append
+         (split-string-and-unquote path ":")
+         exec-path)))
+
 (if (eq system-type 'darwin)
   (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
 )
@@ -18,17 +26,6 @@
 (defconst my/hostname system-name)
 (defconst my/bin (concat my/home "/bin"))
 (defconst my/emacs.d (concat my/home "/.emacs.d/"))
-
-;; set OSX specific stuff - path and font
-(defun set-exec-path-from-shell-PATH ()
-  "Set up Emacs' `exec-path' and PATH environment variable to match that used by the user's shell.
-   This is particularly useful under Mac OSX, where GUI apps are not started from a shell."
-  (interactive)
-  (let ((path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
-
-(set-exec-path-from-shell-PATH)
 
 (when (equal system-type 'darwin)
   (setq mac-option-modifier 'alt)
@@ -157,11 +154,16 @@
 
 (add-hook 'prog-mode-hook 'electric-pair-mode)
 
+;; Org
+(require 'org)
+;;(require 'ob-clojure)
+(setq org-return-follows-link t)
+(setq org-babel-clojure-backend 'cider)
+
 ;; Clojure
 (require 'cider)
 
 (setq nrepl-hide-special-buffers t
-      cider-repl-pop-to-buffer-on-connect nil
       cider-popup-stacktraces nil
       cider-repl-popup-stacktraces t)
 
@@ -169,15 +171,14 @@
 
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
-(setq org-babel-clojure-backend 'cider)
+;;SBCL
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+  ;; Replace "sbcl" with the path to your implementation
+  (setq inferior-lisp-program "sbcl")
+
 
 ;; Magit
 (global-set-key (kbd "C-x g") 'magit-status)
-
-;; Org
-(require 'org)
-
-(setq org-return-follows-link t)
 
 ;; Babel
 
