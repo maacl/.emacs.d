@@ -30,9 +30,11 @@
 
 (set-exec-path-from-shell-PATH)
 
-(when (equal system-type 'darwin) 
+(when (equal system-type 'darwin)
+  (setq mac-option-modifier 'alt)
+  (setq mac-command-modifier 'meta)
+  (setq mac-control-modifier 'control)
   (set-frame-font "Menlo-13"))
-
 
 ;; Add personal bin to path
 (add-to-list 'exec-path my/bin)
@@ -114,12 +116,16 @@
 
 (global-set-key (kbd "C-c C-g") 'ag)
 
+(require 'expand-region)
+(global-set-key (kbd "M-e") 'er/expand-region)
+
 ;; Autocompletion
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (company-quickhelp-mode 1)
 
 ;;ERC
+(load "~/.ercpass")
 (require 'erc)
 
 (require 'erc-hl-nicks)
@@ -129,6 +135,16 @@
 (erc-image-enable)
 
 (add-to-list 'erc-modules 'notifications)
+
+(require 'erc-services)
+(erc-services-mode 1)
+(setq erc-prompt-for-nickserv-password nil)
+
+(setq erc-nickserv-passwords
+      `((freenode (("maacl" . ,freenode-maacl-pass)
+		   ("MAACL" . ,freenode-maacl-pass)))))
+
+(remove-hook 'erc-text-matched-hook 'erc-global-notify)
 
 ;;Programming
 (add-hook 'prog-mode-hook 'show-paren-mode)
@@ -193,6 +209,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(erc-nick "maacl")
  '(fci-rule-color "#f8fce8")
  '(hl-paren-background-colors (quote ("#e8fce8" "#c1e7f8" "#f8e8e8")))
  '(hl-paren-colors (quote ("#40883f" "#0287c8" "#b85c57")))
