@@ -3,23 +3,22 @@
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 
+(if (eq system-type 'darwin)
+  (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el"))
+(if (eq system-type 'gnu/linux)
+  (require 'cask "~/.cask/cask.el"))
+
+(cask-initialize)
+(require 'pallet)
+(pallet-mode t)
+
+;; Path
 (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
   (setenv "PATH" path)
   (setq exec-path 
         (append
          (split-string-and-unquote path ":")
          exec-path)))
-
-(if (eq system-type 'darwin)
-  (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
-)
-(if (eq system-type 'gnu/linux)
-  (require 'cask "~/.cask/cask.el")
-)
-
-(cask-initialize)
-(require 'pallet)
-(pallet-mode t)
 
 ;; Constants
 (defconst my/home (getenv "HOME"))
@@ -28,8 +27,7 @@
 (defconst my/emacs.d (concat my/home "/.emacs.d/"))
 
 (when (equal system-type 'darwin)
-  (setq mac-option-modifier 'alt)
-  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier 'meta)
   (setq mac-control-modifier 'control)
   (set-frame-font "Menlo-13"))
 
@@ -42,26 +40,31 @@
 (define-key input-decode-map "\e[1;10C" [M-S-right])
 (define-key input-decode-map "\e[1;10D" [M-S-left])
 
+;;Files
+(setq
+ backup-directory-alist `((".*" . ,temporary-file-directory))
+ auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
+ backup-by-copying t
+ delete-old-versions t
+ kept-new-versions 6
+ kept-old-versions 2
+ version-control t
+ make-backup-files nil
+ auto-save-default nil)
+
 ;; UI
-;;(menu-bar-mode -1)
+(menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (set-fringe-style -1)
-;;(linum-mode 1)
-
 (setq inhibit-splash-screen t)
-
 (setq visible-bell 1)
-
 (blink-cursor-mode -1)
-
 (global-hl-line-mode)
-
 (require 'popwin)
 (popwin-mode 1)
 
 ;; Themes
-
 (defconst my/light-theme 'plan9)
 (defconst my/dark-theme 'darktooth)
 
@@ -81,7 +84,6 @@
 
 (global-set-key (kbd "C-x d") 'my/dark)
 (global-set-key (kbd "C-x l") 'my/light)
-
 
 ;; Commands
 (require 'ido)
@@ -131,8 +133,6 @@
 (require 'erc-image)
 (erc-image-enable)
 
-(add-to-list 'erc-modules 'notifications)
-
 (require 'erc-services)
 (erc-services-mode 1)
 (setq erc-prompt-for-nickserv-password nil)
@@ -152,11 +152,14 @@
 
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
-(add-hook 'prog-mode-hook 'electric-pair-mode)
+;;(add-hook 'prog-mode-hook 'electric-pair-mode)
 
 ;; Org
 (require 'org)
 ;;(require 'ob-clojure)
+(load-file "~/.emacs.d/ox-taskjuggler.el")
+(add-to-list 'org-export-backends 'taskjuggler)
+
 (setq org-return-follows-link t)
 (setq org-babel-clojure-backend 'cider)
 
@@ -170,6 +173,10 @@
 (setq cider-repl-result-prefix ";; => ")
 
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+
+(require 'org-bullets)
+
+(add-hook 'org-mode-hook 'org-bullets-mode)
 
 ;;SBCL
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
@@ -202,25 +209,14 @@
 
 (org-display-inline-images)
 
-(require 'org-bullets)
-
-(add-hook 'org-mode-hook 'org-bullets-mode)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(erc-nick "maacl")
- '(fci-rule-color "#f8fce8")
- '(hl-paren-background-colors (quote ("#e8fce8" "#c1e7f8" "#f8e8e8")))
- '(hl-paren-colors (quote ("#40883f" "#0287c8" "#b85c57")))
  '(package-selected-packages
    (quote
-    (org pos-tip use-package smex smartparens slime rainbow-delimiters popwin plan9-theme pallet org-tree-slide org-bullets multiple-cursors markdown-mode magit ido-vertical-mode idle-highlight-mode flycheck fancy-narrow expand-region erc-image erc-hl-nicks darktooth-theme company-quickhelp cider ag adoc-mode)))
- '(sml/active-background-color "#98ece8")
- '(sml/active-foreground-color "#282828")
- '(sml/inactive-background-color "#4fa8a8")
- '(sml/inactive-foreground-color "#282828"))
+    (geiser org pos-tip use-package smex smartparens slime rainbow-delimiters popwin plan9-theme pallet org-tree-slide org-bullets multiple-cursors markdown-mode magit ido-vertical-mode idle-highlight-mode flycheck fancy-narrow expand-region darktooth-theme company-quickhelp cider ag adoc-mode erc-hl-nicks erc-image))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
