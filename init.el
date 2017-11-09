@@ -4,13 +4,6 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
-(if (eq system-type 'gnu/linux)
-  (require 'cask "~/.cask/cask.el"))
-
-(cask-initialize)
-;;(require 'pallet)
-;;(pallet-mode t)
-
 ;; Path
 (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
   (setenv "PATH" path)
@@ -232,9 +225,6 @@
 (use-package org
   :ensure t
   :config
-  (load-file "~/.emacs.d/ox-taskjuggler.el")
-  (add-to-list 'org-export-backends 'taskjuggler)
-
   (setq org-return-follows-link t)
   (setq org-babel-clojure-backend 'cider)
 
@@ -329,30 +319,3 @@
 (use-package magit
   :ensure
   :bind ("C-x g" . magit-status))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#32302F" "#FB4934" "#B8BB26" "#FABD2F" "#83A598" "#D3869B" "#17CCD5" "#EBDBB2"])
- '(fci-rule-color "#f8fce8")
- '(hl-paren-background-colors (quote ("#e8fce8" "#c1e7f8" "#f8e8e8")))
- '(hl-paren-colors (quote ("#40883f" "#0287c8" "#b85c57")))
- '(package-selected-packages
-   (quote
-    (erc-services which-key undo-tree pdf-tools ivy web-mode avy counsel swiper haskell-mode intero geiser org pos-tip use-package smex smartparens slime rainbow-delimiters popwin plan9-theme pallet org-tree-slide org-bullets multiple-cursors markdown-mode magit ido-vertical-mode idle-highlight-mode flycheck fancy-narrow expand-region darktooth-theme company-quickhelp cider ag adoc-mode erc-hl-nicks erc-image)))
- '(pos-tip-background-color "#36473A")
- '(pos-tip-foreground-color "#FFFFC8")
- '(sml/active-background-color "#98ece8")
- '(sml/active-foreground-color "#424242")
- '(sml/inactive-background-color "#4fa8a8")
- '(sml/inactive-foreground-color "#424242")
- '(tramp-syntax (quote default) nil (tramp)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
