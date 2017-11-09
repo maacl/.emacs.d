@@ -1,0 +1,192 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/mac/Downloads/boot-cljs-example/src/clj/" . "app/")
+ ("/home/mac/Downloads/boot-cljs-example/src/" . "app/")
+ ("/home/mac/Downloads/boot-cljs-example/" . "html/")
+ ("/home/mac/Dropbox/projects/peanut/src/cljs/" . "peanut/")
+ ("/home/mac/Dropbox/projects/peanut/src/" . "cljs/")
+ ("/home/mac/Dropbox/projects/peanut/" . "src/")
+ ("/home/mac/Dropbox/projects/pm_cljs/assets/" . "js/")
+ ("/home/mac/Dropbox/projects/pm_cljs/" . "src/")
+ ("/home/mac/Downloads/replikativ-demo/src/" . "replikativ_demo/")
+ ("/home/mac/Downloads/replikativ-demo/" . "src/")
+ ("/home/mac/Downloads/datsys/src/dat/sys/" . "client/")
+ ("/home/mac/Downloads/datsys/src/dat/" . "sys/")
+ ("/home/mac/Downloads/datsys/src/" . "dat/")
+ ("/home/mac/Downloads/datsys/resources/public/" . "css/")
+ ("/home/mac/Downloads/datsys/resources/" . "public/")
+ ("/home/mac/Downloads/datsys/" . "src/")
+ ("/home/mac/Dropbox/projects/clause-diff/" . "src/")
+ ("/home/" . "mac/")
+ ("/home/mac/Downloads/helloworld/" . "app/")
+ ("/home/mac/Downloads/clause-diff/" . "src/")
+ ("/home/mac/Downloads/" . "boot-cljs-example/")
+ ("/home/mac/Dropbox/projects/tmp/demos/petrol/src/petrol_examples/" . "counter/")
+ ("/home/mac/Dropbox/projects/tmp/demos/petrol/src/" . "petrol_examples/")
+ ("/home/mac/Dropbox/projects/tmp/demos/petrol/" . "src/")
+ ("/home/mac/Dropbox/projects/tmp/demos/" . "petrol/")
+ ("/home/mac/Dropbox/projects/tmp/" . "demos/")
+ ("/home/mac/Dropbox/projects/" . "pm_cljs/")
+ ("/home/mac/Dropbox/" . "projects/")
+ ("/home/mac/" . ".emacs.d/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/mac/.emacs.d/"
+ "/home/mac/Downloads/boot-cljs-example/html/"
+ "/home/mac/Downloads/boot-cljs-example/src/app/"
+ "/home/mac/Downloads/boot-cljs-example/"
+ "/home/mac/Downloads/boot-cljs-example/src/clj/app/"
+ "/home/mac/.boot/"
+ "/home/mac/Downloads/boot-cljs-example/resources/"
+ "/home/mac/Dropbox/projects/pm_cljs/src/"
+ "/home/mac/Downloads/prosemirror-test/"
+ "/home/mac/Dropbox/projects/pm_cljs/prosemirror-test/"
+ "/home/mac/Dropbox/projects/pm_cljs/"
+ "/home/mac/Downloads/"
+ "/home/mac/Dropbox/projects/peanut/"
+ "/home/mac/Dropbox/projects/peanut/src/cljs/peanut/"
+ "/home/mac/Dropbox/projects/pm_cljs/assets/js/"
+ "/home/mac/Downloads/replikativ-demo/src/replikativ_demo/"
+ "/home/mac/Downloads/replikativ-demo/"
+ "/home/mac/Dropbox/org/"
+ "/home/mac/Downloads/datsys/src/dat/sys/client/"
+ "/home/mac/Downloads/datsys/src/dat/sys/"
+ "/home/mac/Downloads/datsys/resources/public/css/"
+ "/home/mac/Downloads/datsys/"
+ "/home/mac/Dropbox/projects/clause-diff/src/"
+ "/home/mac/Downloads/helloworld/app/"
+ "/home/mac/Downloads/helloworld/src/"
+ "/home/mac/Downloads/clause-diff/src/"
+ "/home/mac/Downloads/clause-diff/assets/css/"
+ "/home/mac/Dropbox/projects/hypercon/docs/"
+ "/home/mac/Dropbox/projects/tmp/demos/petrol/src/petrol_examples/counter/"
+ "/home/mac/Dropbox/projects/tmp/demos/petrol/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "Cask"
+ "init.el"
+ "index.html"
+ "storage.cljs"
+ "diff.cljs"
+ "core.cljs"
+ "build.boot"
+ "validation.cljs"
+ "data.cljs"
+ "macros.clj"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/mac/" (22490 61199 623417 684000) ".sudo_as_admin_successful" ".oh-my-zsh/" ".thunderbird/" ".webex/" ".python_history" ".steampid" "Dropbox/" ".zshrc" ".nvidia-settings-rc" ".zsh_history" ".Skype/" ".gitconfig" ".adobe/" ".xsession-errors.old" ".rpmdb/" ".racket/" ".boot/" ".gnupg/" ".mozilla/" ".steam/" ".wget-hsts" "FS-UAE/" ".pki/" ".local/" ".bash_history" "go/" ".MPS33/" ".m2/" ".lein/" ".bash_logout" ".pgpass" "Desktop/" "../" ".gtk-recordmydesktop" ".emacs.d/" "Steam/" ".ercpass" ".dropbox-dist/" ".bashrc" ".zsh-update" ".cache/" "./" ".android/" ".dropbox/" ".gconf/" ".java/" "bin/" ".ghc/" "Downloads/" ".zcompdump-mac-XPS-15-9550-5.1.1" ".gnome/" ".compiz/" ".profile" ".macromedia/" ".stack/" ".nano/" ".dbus/" ".zshrc.pre-oh-my-zsh" ".ICEauthority" ".node_repl_history" ".cask/" ".dmrc" ".config/" ".npm/" ".xsession-errors" ".steampath" ".ssh/" ".Xauthority" ".pgadmin3" ".pulse-cookie" ".nv/" ".zcompdump" ".docker/")
+
+ ("/home/mac/Downloads/" (22490 59409 653351 763000) "foo.hs" "../" "prosemirror-test/" "DaisyDiff/" "./" "boot-cljs-example/" "MaÌŠlsamtale2.docx" "StatechartsAVisualFormalismForComplexSystems.pdf" "registrering-af-virksomhed-aendring.pdf" "node_modules/")
+
+ ("/home/mac/Downloads/boot-cljs-example/" (22488 26691 66791 742000) "src/" "test/" "out/" ".nrepl-history" "../" "target/" ".gitignore" "./" "build.boot" ".nrepl-port" ".travis.yml" "html/" ".git/" "resources/" "boot.properties" "README.md")
+
+ ("/home/mac/Downloads/boot-cljs-example/html/" (22489 34596 630731 722000) "css/" "index.html" "../" "./" "img/")
+
+ ("/home/mac/Downloads/boot-cljs-example/src/app/" (22488 22564 809348 151000) "core.cljs" "diff.cljs" "../" "./" "validation.cljs" "storage.cljs" "data.cljs")
+
+ ("/home/mac/.emacs.d/" (22487 50613 633119 352000) "profile-dotemacs.el" "Cask" "auto-save-list/" "ox-taskjuggler.el" "ido.last" "../" ".gitignore" "./" "init.el" ".cask/" ".git/")
+
+ ("/home/mac/Downloads/boot-cljs-example/resources/" (22483 11451 839303 328000) "../" "./" "nype93srcjsonstr-bak.txt" "img/" "nype93srcjsonstr.txt")
+
+ ("/home/mac/Downloads/boot-cljs-example/src/" (22483 9115 378076 779000) "app/" "../" "./" "main.cljs.edn" "js/")
+
+ ("/home/mac/Downloads/boot-cljs-example/src/clj/app/" (22483 4529 753501 346000) "../" "./" "macros.clj")
+
+ ("/home/mac/Downloads/boot-cljs-example/src/clj/" (22483 4495 128726 766000) "app/" "../" "./")
+
+ ("/home/mac/.boot/" (22482 45760 42020 777000) "profile.boot" "../" "./" "cache/" "boot.properties")
+
+ ("/home/mac/Dropbox/projects/pm_cljs/src/" (22479 19499 209027 957000) "index.cljs.hl" "snippets.cljs" "externs.js" "../" "./" "prosemirror.js")
+
+ ("/home/mac/Dropbox/" (22479 10726 149063 263000) "org/" "sql/" "maacl.github.com/" "safe.kdbx" "../" "./" ".dropbox" ".dropbox.cache/" "projects/" "nype93_head.png" "documents/")
+
+ ("/home/mac/Dropbox/projects/peanut/" (22478 21577 966038 905000) "src/" "project.clj" "../" "target/" ".gitignore" "./" "figwheel_server.log" "resources/" "README.md")
+
+ ("/home/mac/Downloads/prosemirror-test/" (22478 51185 713169 168000) "prosemirror-src.js" "rebuild.sh" "../" "./" "LICENSE" "package.json" "prosemirror.js" "venv/" "build.sh" ".git/" "prosemirror (copy).js" "node_modules/" "README.md")
+
+ ("/home/mac/Dropbox/projects/pm_cljs/" (22478 36149 772957 417000) "src/" "out/" "../" "prosemirror-test/" ".gitignore" "./" "build.boot" "assets/" ".git/" "boot.properties" "README.md")
+
+ ("/home/mac/Dropbox/projects/pm_cljs/prosemirror-test/" (22478 44673 812279 73000) "prosemirror-src.js" "rebuild.sh" "../" "./" "LICENSE" "package.json" "prosemirror.js" "venv/" "build.sh" ".git/" "prosemirror (copy).js" "README.md")
+
+ ("/home/mac/Dropbox/projects/peanut/src/cljs/peanut/" (22478 6471 386252 459000) "core.cljs" "handlers.cljs" "../" "config.cljs" "./" "db.cljs" "subs.cljs" "views.cljs")
+
+ ("/home/mac/Dropbox/projects/peanut/src/cljs/" (22478 6471 382252 476000) "../" "./" "peanut/")
+
+ ("/home/mac/Dropbox/projects/peanut/src/" (22478 6471 382252 476000) "clj/" "../" "./" "cljs/")
+
+ ("/home/mac/Dropbox/projects/" (22478 6471 370252 530000) "pm_cljs/" "edu/" "old/" "clause-diff/" "../" "kontrakt/" "./" "composing_contracts/" "tmp/" "hypercon/" "syngrato/" "peanut/" "roight/")
+
+ ("/home/mac/Dropbox/projects/clause-diff/src/" (22475 15641 327922 934000) "index.cljs.hl" "../" "./")
+
+ ("/home/mac/Dropbox/projects/pm_cljs/assets/js/" (22476 11706 711184 734000) "entry.js" "caramel.js" "../" "jquery.min.js" "./" "bundle_basic.js" "prosemirror.js" "caramel.min.js" ".DS_Store")
+
+ ("/home/mac/Dropbox/org/" (22473 21335 738524 855000) "../" "./" "includes/" "#syngrato.org#" ".git/" "index.org" "syngrato.org")
+
+ ("/home/mac/Dropbox/projects/pm_cljs/assets/" (22437 462 108541 0) "icon.svg" "css/" "app.css" "../" "./" "fonts/" "js/")
+
+ ("/home/mac/Downloads/replikativ-demo/src/replikativ_demo/" (22465 51598 914882 843000) "core.clj" "../" "./")
+
+ ("/home/mac/Downloads/replikativ-demo/src/" (22456 8107 266451 992000) "../" "./" "replikativ_demo/")
+
+ ("/home/mac/Downloads/replikativ-demo/" (22468 7143 831058 804000) "src/" "project.clj" ".lein-repl-history" "../" "target/" ".gitignore" "./" ".nrepl-port" ".git/" "README.md")
+
+ ("/home/mac/Downloads/datsys/" (22456 52218 408443 1000) "src/" "catalysis.jpg" ".lein-env" "datsys.png" "project.clj" "libs/" "dev/" ".lein-repl-history" "../" "target/" "app.json" "checkouts/" ".gitignore" "./" "LICENSE" "config/" ".git/" ".gitmodules" "resources/" "logs/" "README.md")
+
+ ("/home/mac/Downloads/datsys/resources/public/css/" (22450 3812 30525 658000) "re-com.css" "bootstrap.css" "../" "./" "chosen-sprite.png" "material-design-iconic-font.min.css" "chosen-sprite@2x.png" "style.css")
+
+ ("/home/mac/Downloads/datsys/src/dat/sys/" (22450 3815 486504 284000) "app.clj" "server.clj" "ws.clj" "run.clj" "ring_handler.clj" "../" "system.clj" "./" "datomic.clj" "import.clj" "client/" "config.clj" "shared/")
+
+ ("/home/mac/Downloads/datsys/src/dat/sys/client/" (22450 3815 486504 284000) "start.cljs" "../" "./" "events.cljc" "app.cljs" "views.cljs")
+
+ ("/home/mac/Downloads/datsys/src/dat/" (22449 24438 188045 561000) "sys/" "../" "./")
+
+ ("/home/mac/Downloads/datsys/src/" (22449 24438 188045 561000) "../" "dat/" "./")
+
+ ("/home/mac/Downloads/datsys/resources/public/" (22449 24438 188045 561000) "css/" "../" "cards.html" "./" "fonts/" "js/")
+
+ ("/home/mac/Downloads/datsys/resources/" (22449 29095 851873 99000) "test-data.edn" "logback.xml" "index.html" "../" "./" "schema.edn" "public/")
+
+ ("/home/mac/Dropbox/projects/clause-diff/" (22447 2479 475407 583000) "src/" "out/" "../" ".gitignore" "./" "build.boot" ".nrepl-port" "assets/" ".git/" "boot.properties" "README.md")
+
+ ("/home/" (22414 30872 425191 834000) "../" "mac/" "./")
+
+ ("/home/mac/Downloads/helloworld/app/" (22443 48526 244166 921000) "../" "Main.hs" "./")
+
+ ("/home/mac/Downloads/helloworld/src/" (22443 48526 244166 921000) "../" "./" "Lib.hs")
+
+ ("/home/mac/Downloads/helloworld/" (22443 48592 871787 850000) "src/" "test/" "app/" "Setup.hs" "../" "./" "LICENSE" "stack.yaml" "helloworld.cabal")
+
+ ("/home/mac/Downloads/clause-diff/" (22442 56012 487709 153000) "src/" "out/" "../" ".gitignore" "./" "build.boot" ".nrepl-port" "assets/" ".git/" "boot.properties" "README.md")
+
+ ("/home/mac/Downloads/clause-diff/src/" (22443 56027 195595 107000) "index.cljs.hl" "../" "./")
+
+ ("/home/mac/Dropbox/projects/tmp/demos/petrol/" (22433 46238 438198 895000) "src/" "out/" ".nrepl-history" "../" ".gitignore" "./" "build.boot" " (mac-XPS-15-9550's conflicted copy 2016-07-21).nrepl-port" "boot.properties" "README.md")
+
+ ("/home/mac/Dropbox/projects/tmp/demos/petrol/src/petrol_examples/counter/" (22433 46234 766236 32000) "processing.cljs" "../" "messages.cljs" "./" "view.cljs.hl" "state.cljs.hl" "counter.cljs.hl")
+
+ ("/home/mac/Dropbox/projects/hypercon/docs/" (22429 60287 12568 51000) "../" "./" "demoscript.org")
+
+ ("/home/mac/Downloads/clause-diff/assets/css/" (22438 63158 186294 346000) "caramel.css" "../" "caramel.min.css" "./" ".DS_Store")
+
+ ("/home/mac/Dropbox/projects/hypercon/" (22418 9051 525301 809000) ".gitattributes" "_spreferences/" "solutions/" "../" ".gitignore" "./" "devkits/" ".mps/" "build/" "build.properties.example" ".git/" "tests/" "build.xml" "languages/" "README.md")
+
+ ("/home/mac/Dropbox/projects/tmp/demos/petrol/src/petrol_examples/" (22413 10801 134662 0) "counter/" "../" "./")
+
+ ("/home/mac/Dropbox/projects/tmp/demos/petrol/src/" (22413 10241 599184 0) "../" "./" "hoplon/" "petrol_examples/")
+
+ ("/home/mac/Dropbox/projects/tmp/demos/" (22413 10196 103564 0) "validated-form/" "castra-notify-random/" "counters/" "petrol/" "demos-homepage/" "castra-datomic-free/" "deps/" "castra-notify-chat/" "inputs/" "async-webinar/" "tictactoe/" "deploy-uberwar/" "../" "todoFRP-html/" ".gitignore" "todoFRP/" "./" "lens/" "duracell/" "castra-chat/" "jquery-selectize/" "castra-simple/" "territory-builder/" "plotSVG/" "w3c-worker/" "tworker/" "hoplife/" "jquery-date-picker/" "google-maps/" ".git/" "contacts/" "build-gh-pages" "build.util.clj" "infinite-scroll/" "epl-v10.html" "castra-datomic-free-state/" "Makefile" "README.md" "infinite-scroll-paginated/")
+
+ ("/home/mac/Dropbox/projects/tmp/" (22412 59752 318019 0) "petrol/" "future-app/" "../" "demos/" "./" "hoplon-app/" "proto-chart-test/" "stately/")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

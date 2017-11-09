@@ -1,21 +1,20 @@
 ;; Package management
 (require 'package)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
-(if (eq system-type 'darwin)
-  (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el"))
 (if (eq system-type 'gnu/linux)
   (require 'cask "~/.cask/cask.el"))
 
 (cask-initialize)
-(require 'pallet)
-(pallet-mode t)
+;;(require 'pallet)
+;;(pallet-mode t)
 
 ;; Path
 (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
   (setenv "PATH" path)
-  (setq exec-path 
+  (setq exec-path
         (append
          (split-string-and-unquote path ":")
          exec-path)))
@@ -30,6 +29,16 @@
   (setq mac-option-modifier 'meta)
   (setq mac-control-modifier 'control)
   (set-frame-font "Menlo-13"))
+
+;; Fonts
+(defun my-pretty-lambda ()
+  "make some word or string show as pretty Unicode symbols"
+  (setq prettify-symbols-alist
+        '(
+          ("fn" . 955) ; λ
+          )))
+
+(global-prettify-symbols-mode 1)
 
 ;; Add personal bin to path
 (add-to-list 'exec-path my/bin)
@@ -61,12 +70,22 @@
 (setq visible-bell 1)
 (blink-cursor-mode -1)
 (global-hl-line-mode)
-(require 'popwin)
-(popwin-mode 1)
+
+(use-package popwin
+  :ensure t
+  :config
+  (popwin-mode 1))
 
 ;; Themes
-(defconst my/light-theme 'plan9)
-(defconst my/dark-theme 'darktooth)
+(use-package plan9-theme
+  :ensure t
+  :config
+  (defconst my/light-theme 'plan9))
+
+(use-package darktooth-theme
+  :ensure t
+  :config
+  (defconst my/dark-theme 'darktooth))
 
 (defun my/change-theme (old new)
   (disable-theme old)
@@ -85,21 +104,42 @@
 (global-set-key (kbd "C-x d") 'my/dark)
 (global-set-key (kbd "C-x l") 'my/light)
 
-;; Commands
-(require 'ido)
-(ido-mode)
-;;; Ignore .DS_Store files with ido mode
-(add-to-list 'ido-ignore-files "\\.DS_Store")
+;; Ivy
+(use-package ivy
+  :ensure t
+  :bind
+  ("C-s" . swiper)
+  ("M-x" . counsel-M-x)
+  ("C-x C-f" . counsel-find-file)
+  ("C-c g" . counsel-git)
+  ("C-c k" . counsel-ag)
+  ("C-x l" . counsel-locate)
+  ("C-c C-r" . ivy-resume)
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) "))
 
+;; Avy
+(use-package avy
+  :ensure t
+  :bind ("M-s" . avy-goto-char))
 
-(require 'ido-vertical-mode)
-(ido-vertical-mode)
-
-(setq ido-enable-flex-matching t)
-
+;; General
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;Editor
+(use-package undo-tree
+  :ensure t
+  :init (global-undo-tree-mode)
+  :bind ("C-z" . undo) ("C-S-z" . redo))
+
+(use-package multiple-cursors
+  :ensure t
+  :bind (("M-." . mc/mark-next-like-this)
+         ("M-," . mc/unmark-next-like-this)
+         ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
+
 (setq make-backup-files nil)
 
 (delete-selection-mode)
@@ -110,113 +150,206 @@
 
 (setq tab-width 4)
 
-(require 'ag)
-(setq ag-reuse-buffers 't)
+(use-package ag
+  :ensure t
+  :commands ag
+  :bind ("C-c C-g" . ag)
+  :config
+  (setq ag-reuse-buffers 't))
 
-(global-set-key (kbd "C-c C-g") 'ag)
+(use-package expand-region
+  :ensure t
+  :commands er/expand-region
+  :bind ("M-e" . er/expand-region))
 
-(require 'expand-region)
-(global-set-key (kbd "M-e") 'er/expand-region)
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+
+;;Fancy Narrow
+(use-package fancy-narrow
+  :ensure t
+  :config
+  (fancy-narrow-mode)
+  :bind ("C-x , ," . fancy-narrow-to-region)
+        ("C-x , ." . fancy-widen))
 
 ;; Autocompletion
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
-(company-quickhelp-mode 1)
+(use-package company
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'global-company-mode)
+  (use-package company-quickhelp
+    :ensure t
+    :config
+    (company-quickhelp-mode 1)))
+
+;;Flycheck
+(use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode t))
+
+;; Guidance
+(use-package which-key
+  :ensure t
+  :diminish which-key-mode
+  :config (which-key-mode))
 
 ;;ERC
-(load "~/.ercpass")
-(require 'erc)
+(use-package erc
+  :ensure t
+  :init
+  (load "~/.ercpass")
+  :config
+  (use-package erc-hl-nicks
+    :ensure t
+    :config
+    (erc-hl-nicks-enable))
+  (use-package erc-image
+    :ensure t
+    :config
+    (erc-image-enable))
+  (use-package erc-services
+    :config
+    (erc-services-mode 1))
+  (setq erc-prompt-for-nickserv-password nil)
+  (setq erc-nickserv-passwords
+	`((freenode (("maacl" . ,freenode-maacl-pass)
+		     ("MAACL" . ,freenode-maacl-pass)))))
 
-(require 'erc-hl-nicks)
-(erc-hl-nicks-enable)
-
-(require 'erc-image)
-(erc-image-enable)
-
-(require 'erc-services)
-(erc-services-mode 1)
-(setq erc-prompt-for-nickserv-password nil)
-
-(setq erc-nickserv-passwords
-      `((freenode (("maacl" . ,freenode-maacl-pass)
-		   ("MAACL" . ,freenode-maacl-pass)))))
-
-(remove-hook 'erc-text-matched-hook 'erc-global-notify)
+  (remove-hook 'erc-text-matched-hook 'erc-global-notify))
 
 ;;Programming
 (add-hook 'prog-mode-hook 'show-paren-mode)
 
 (setq show-paren-style 'expression)
 
-(require 'rainbow-delimiters)
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+;; org-mode
+(use-package org
+  :ensure t
+  :config
+  (load-file "~/.emacs.d/ox-taskjuggler.el")
+  (add-to-list 'org-export-backends 'taskjuggler)
 
-;;(add-hook 'prog-mode-hook 'electric-pair-mode)
+  (setq org-return-follows-link t)
+  (setq org-babel-clojure-backend 'cider)
 
-;; Org
-(require 'org)
-;;(require 'ob-clojure)
-(load-file "~/.emacs.d/ox-taskjuggler.el")
-(add-to-list 'org-export-backends 'taskjuggler)
+  ;; org-mode babel
 
-(setq org-return-follows-link t)
-(setq org-babel-clojure-backend 'cider)
+  (defconst my/babel-languages '(emacs-lisp js haskell python clojure))
 
-;; Clojure
-(require 'cider)
-
-(setq nrepl-hide-special-buffers t
-      cider-popup-stacktraces nil
-      cider-repl-popup-stacktraces t)
-
-(setq cider-repl-result-prefix ";; => ")
-
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-
-(require 'org-bullets)
-
-(add-hook 'org-mode-hook 'org-bullets-mode)
-
-;;SBCL
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-  ;; Replace "sbcl" with the path to your implementation
-  (setq inferior-lisp-program "sbcl")
-
-
-;; Magit
-(global-set-key (kbd "C-x g") 'magit-status)
-
-;; Babel
-
-(defconst my/babel-languages '(emacs-lisp sh js haskell python clojure))
-
-(org-babel-do-load-languages
-  'org-babel-load-languages
+  (org-babel-do-load-languages
+   'org-babel-load-languages
    (mapcar (lambda (lang) (cons lang t)) my/babel-languages))
 
-(setq org-src-tab-acts-natively t
-      org-src-fontify-natively t
-      org-confirm-babel-evaluate nil)
-;; Tasks
+  (setq org-src-tab-acts-natively t
+	org-src-fontify-natively t
+	org-confirm-babel-evaluate nil)
 
-(defconst my/org-keywords
-  '((sequence "TODO(t)" "INPROGRESS(i)" "WAIT(w)" "|" "DONE(d)")))
+  ;; org-mode tasks
+  (defconst my/org-keywords
+    '((sequence "TODO(t)" "INPROGRESS(i)" "WAIT(w)" "|" "DONE(d)")))
+  (setq org-todo-keywords my/org-keywords)
+  (setq org-enforce-todo-dependencies t)
 
-(setq org-todo-keywords my/org-keywords)
+  ;; org-mode images
+  (org-display-inline-images)
 
-(setq org-enforce-todo-dependencies t)
+  ;; org-mode bullets
+  (use-package org-bullets
+    :ensure t
+    :commands (org-bullets-mode)
+    :init (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  (use-package org-tree-slide
+    :ensure t))
 
-(org-display-inline-images)
+;;Markdown/AsciiDoc
+(use-package markdown-mode
+  :ensure t)
+(use-package adoc-mode
+  :ensure t)
+
+;; Clojure
+(use-package cider
+  :ensure t
+  :config
+  (setq nrepl-hide-special-buffers t
+	cider-popup-stacktraces nil
+	cider-repl-popup-stacktraces t)
+  (setq cider-repl-result-prefix ";; => ")
+  (add-hook 'cider-mode-hook 'eldoc-mode)
+  (add-hook 'clojure-mode-hook 'my-pretty-lambda)
+  (add-hook 'clojurescript-mode-hook 'my-pretty-lambda)
+  (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))"))
+
+;;HTML
+(use-package web-mode
+  :mode ("\\.html$" . web-mode)
+  :init
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+
+  (setq web-mode-enable-auto-pairing t)
+  (setq web-mode-enable-auto-expanding t)
+  (setq web-mode-enable-css-colorization t))
+
+;; F#
+(use-package fsharp-mode
+  :init
+  (setq inferior-fsharp-program "/usr/bin/fsharpi --readline-")
+  (setq fsharp-compiler "/usr/bin/fsharpc"))
+
+;; Haskell
+(use-package haskell-mode
+  :ensure t
+  :config
+  (progn
+    (use-package intero
+      :ensure t
+      :config
+      (progn 
+        (add-hook 'haskell-mode-hook 'intero-mode)))))
+
+;;Racket
+(use-package geiser
+  :ensure t)
+
+;;Lisp / SBCL
+(use-package slime
+  :ensure t)
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "sbcl")
+
+;; Magit
+(use-package magit
+  :ensure
+  :bind ("C-x g" . magit-status))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#32302F" "#FB4934" "#B8BB26" "#FABD2F" "#83A598" "#D3869B" "#17CCD5" "#EBDBB2"])
+ '(fci-rule-color "#f8fce8")
+ '(hl-paren-background-colors (quote ("#e8fce8" "#c1e7f8" "#f8e8e8")))
+ '(hl-paren-colors (quote ("#40883f" "#0287c8" "#b85c57")))
  '(package-selected-packages
    (quote
-    (geiser org pos-tip use-package smex smartparens slime rainbow-delimiters popwin plan9-theme pallet org-tree-slide org-bullets multiple-cursors markdown-mode magit ido-vertical-mode idle-highlight-mode flycheck fancy-narrow expand-region darktooth-theme company-quickhelp cider ag adoc-mode erc-hl-nicks erc-image))))
+    (erc-services which-key undo-tree pdf-tools ivy web-mode avy counsel swiper haskell-mode intero geiser org pos-tip use-package smex smartparens slime rainbow-delimiters popwin plan9-theme pallet org-tree-slide org-bullets multiple-cursors markdown-mode magit ido-vertical-mode idle-highlight-mode flycheck fancy-narrow expand-region darktooth-theme company-quickhelp cider ag adoc-mode erc-hl-nicks erc-image)))
+ '(pos-tip-background-color "#36473A")
+ '(pos-tip-foreground-color "#FFFFC8")
+ '(sml/active-background-color "#98ece8")
+ '(sml/active-foreground-color "#424242")
+ '(sml/inactive-background-color "#4fa8a8")
+ '(sml/inactive-foreground-color "#424242")
+ '(tramp-syntax (quote default) nil (tramp)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
