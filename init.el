@@ -4,6 +4,15 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
+
 ;; Path
 (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
   (setenv "PATH" path)
@@ -62,40 +71,18 @@
 (setq inhibit-splash-screen t)
 (setq visible-bell 1)
 (blink-cursor-mode -1)
-(global-hl-line-mode)
+;;(global-hl-line-mode)
 
 (use-package popwin
   :ensure t
   :config
   (popwin-mode 1))
 
-;; Themes
-(use-package plan9-theme
-  :ensure t
-  :config
-  (defconst my/light-theme 'plan9))
+(use-package swiper
+  :ensure t)
 
-(use-package darktooth-theme
-  :ensure t
-  :config
-  (defconst my/dark-theme 'darktooth))
-
-(defun my/change-theme (old new)
-  (disable-theme old)
-  (load-theme new t))
-
-(defun my/dark ()
-  (interactive)
-  (my/change-theme my/light-theme my/dark-theme))
-
-(defun my/light ()
-  (interactive)
-  (my/change-theme my/dark-theme my/light-theme))
-
-(my/light)
-
-(global-set-key (kbd "C-x d") 'my/dark)
-(global-set-key (kbd "C-x l") 'my/light)
+(use-package counsel
+  :ensure t)
 
 ;; Ivy
 (use-package ivy
@@ -137,9 +124,9 @@
 
 (delete-selection-mode)
 
-(setq whitespace-style '(face trailing tabs))
+;;(setq whitespace-style '(face trailing tabs))
 
-(add-hook 'prog-mode-hook 'whitespace-mode)
+;;(add-hook 'prog-mode-hook 'whitespace-mode)
 
 (setq tab-width 4)
 
@@ -177,9 +164,7 @@
 
 ;;Flycheck
 (use-package flycheck
-  :ensure t
-  :init
-  (global-flycheck-mode t))
+  :ensure t)
 
 ;; Guidance
 (use-package which-key
@@ -302,7 +287,7 @@
     (use-package intero
       :ensure t
       :config
-      (progn 
+      (progn
         (add-hook 'haskell-mode-hook 'intero-mode)))))
 
 ;;Racket
@@ -319,3 +304,31 @@
 (use-package magit
   :ensure
   :bind ("C-x g" . magit-status))
+
+;; Themes
+(use-package solarized-theme
+  :ensure t
+  :config
+  (setq solarized-distinct-fringe-background t)
+  (setq solarized-use-variable-pitch nil)
+  (setq solarized-scale-org-headlines nil)
+  (setq solarized-high-contrast-mode-line t)
+
+  (defcustom default-light-color-theme 'solarized-light
+  "default light theme")
+
+  (defcustom default-dark-color-theme 'solarized-dark
+    "default dark theme")
+
+  (defun toggle-dark-light-theme ()
+    (interactive)
+
+    (let ((is-light (find default-light-color-theme custom-enabled-themes)))
+      (dolist (theme custom-enabled-themes)
+	(disable-theme theme))
+      (load-theme (if is-light default-dark-color-theme default-light-color-theme) t)))
+
+  (if window-system
+      (progn
+	(global-set-key (kbd "<f11>") 'toggle-dark-light-theme)
+	(load-theme 'solarized-light t))))
