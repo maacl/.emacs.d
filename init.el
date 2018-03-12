@@ -24,9 +24,7 @@
 
 ;; Constants
 (defconst my/home (getenv "HOME"))
-;; (defconst my/hostname system-name)
 (defconst my/bin (concat my/home "/bin"))
-;;(defconst my/emacs.d (concat my/home "/.emacs.d/"))
 
 (when (equal system-type 'darwin)
   (setq mac-option-modifier 'meta)
@@ -62,8 +60,6 @@
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 
-(setq make-backup-files nil)
-
 ;; store all autosave files in the tmp dir
 ;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Auto-Save-Files.html
 (setq auto-save-file-name-transforms
@@ -82,7 +78,6 @@
 (setq inhibit-splash-screen t)
 (setq visible-bell 1)
 (blink-cursor-mode -1)
-;;(global-hl-line-mode)
 
 (use-package powerline
   :ensure t
@@ -91,14 +86,14 @@
   :config
   (setq powerline-default-separator 'utf-8))
 
+;; chords
 (use-package use-package-chords
   :ensure t
   :config
   (key-chord-mode 1))
 
 (defun jc/switch-to-previous-buffer ()
-  "Switch to previously open buffer.
-Repeated invocations toggle between the two most recently open buffers."
+  "Switch to previously open buffer. Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
@@ -178,8 +173,6 @@ Repeated invocations toggle between the two most recently open buffers."
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   :bind  ("C-x o" . ace-window))
 
-(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
-
 ;;Fancy Narrow
 (use-package fancy-narrow
   :ensure t
@@ -247,6 +240,7 @@ Repeated invocations toggle between the two most recently open buffers."
   :init
   (bind-key "C-c a" 'org-agenda)
   :config
+  (setq org-agenda-files '("~/Dropbox/documents/work/GFK/timecard.org"))
   (setq org-return-follows-link t)
   (setq org-babel-clojure-backend 'cider)
 
@@ -317,7 +311,6 @@ Repeated invocations toggle between the two most recently open buffers."
                  cljr-favor-private-functions)
   :diminish clj-refactor-mode)
 
-
 ;;HTML
 (use-package web-mode
   :mode ("\\.html$" . web-mode)
@@ -353,23 +346,6 @@ Repeated invocations toggle between the two most recently open buffers."
   :ensure t)
 
 ;;Lisp / SBCL
-;; (use-package parinfer
-;;   :ensure t
-;;   :bind
-;;   (("C-," . parinfer-toggle-mode))
-;;   :init
-;;   (progn
-;;     (setq parinfer-extensions
-;;           '(defaults       ; should be included.
-;;             pretty-parens  ; different paren styles for different modes.
-;;             smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
-;;             smart-yank))   ; Yank behavior depend on mode.
-;;     (add-hook 'clojure-mode-hook #'parinfer-mode)
-;;     (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
-;;     (add-hook 'common-lisp-mode-hook #'parinfer-mode)
-;;     (add-hook 'scheme-mode-hook #'parinfer-mode)
-;;     (add-hook 'lisp-mode-hook #'parinfer-mode)))
-
 (use-package slime
   :ensure t)
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
@@ -421,7 +397,7 @@ Repeated invocations toggle between the two most recently open buffers."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(aw-keys '(97 115 100 102 103 104 106 107 108) t)
- '(org-agenda-files '("~/Dropbox/documents/work/GFK/timecard.org"))
+ '
  '(package-selected-packages
    '(exec-path-from-shell powerline smex use-package-chords git-timemachine git-gutter cider ace-window validate fsharp-mode cheerilee clj-refactor org-clock-csv which-key use-package undo-tree solarized-theme slime rainbow-delimiters popwin plan9-theme pallet org-tree-slide org-bullets multiple-cursors markdown-mode magit intero geiser fancy-narrow expand-region erc-image erc-hl-nicks darktooth-theme counsel company-quickhelp avy ag adoc-mode)))
 (custom-set-faces
