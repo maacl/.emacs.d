@@ -391,18 +391,3 @@
       (progn
 	(global-set-key (kbd "<f11>") 'toggle-dark-light-theme)
 	(load-theme 'solarized-light t))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(aw-keys '(97 115 100 102 103 104 106 107 108) t)
- '
- '(package-selected-packages
-   '(exec-path-from-shell powerline smex use-package-chords git-timemachine git-gutter cider ace-window validate fsharp-mode cheerilee clj-refactor org-clock-csv which-key use-package undo-tree solarized-theme slime rainbow-delimiters popwin plan9-theme pallet org-tree-slide org-bullets multiple-cursors markdown-mode magit intero geiser fancy-narrow expand-region erc-image erc-hl-nicks darktooth-theme counsel company-quickhelp avy ag adoc-mode)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
