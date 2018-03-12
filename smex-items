@@ -1,0 +1,16 @@
+
+;; ----- smex-history -----
+(
+ powerline-reset
+ ag
+ cd
+ 5x5
+ arp
+ dbx
+ dig
+)
+
+;; ----- smex-data -----
+(
+ (powerline-reset . 1)
+)

@@ -13,19 +13,20 @@
 (require 'diminish)
 (require 'bind-key)
 
+(use-package validate
+  :ensure t)
+
 ;; Path
-(let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
-  (setenv "PATH" path)
-  (setq exec-path
-        (append
-         (split-string-and-unquote path ":")
-         exec-path)))
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
 ;; Constants
 (defconst my/home (getenv "HOME"))
-(defconst my/hostname system-name)
+;; (defconst my/hostname system-name)
 (defconst my/bin (concat my/home "/bin"))
-(defconst my/emacs.d (concat my/home "/.emacs.d/"))
+;;(defconst my/emacs.d (concat my/home "/.emacs.d/"))
 
 (when (equal system-type 'darwin)
   (setq mac-option-modifier 'meta)
@@ -52,16 +53,26 @@
 (define-key input-decode-map "\e[1;10D" [M-S-left])
 
 ;;Files
-(setq
- backup-directory-alist `((".*" . ,temporary-file-directory))
- auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
- backup-by-copying t
- delete-old-versions t
- kept-new-versions 6
- kept-old-versions 2
- version-control t
- make-backup-files nil
- auto-save-default nil)
+;; disable lockfiles
+;; see http://www.gnu.org/software/emacs/manual/html_node/emacs/Interlocking.html
+(setq create-lockfiles nil)
+
+;; store all backup files in the tmp dir
+;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Backup-Names.html
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+
+(setq make-backup-files nil)
+
+;; store all autosave files in the tmp dir
+;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Auto-Save-Files.html
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+;; autosave the undo-tree history
+(setq undo-tree-history-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq undo-tree-auto-save-history t)
 
 ;; UI
 (menu-bar-mode -1)
@@ -73,6 +84,26 @@
 (blink-cursor-mode -1)
 ;;(global-hl-line-mode)
 
+(use-package powerline
+  :ensure t
+  :init
+  (powerline-default-theme)
+  :config
+  (setq powerline-default-separator 'utf-8))
+
+(use-package use-package-chords
+  :ensure t
+  :config
+  (key-chord-mode 1))
+
+(defun jc/switch-to-previous-buffer ()
+  "Switch to previously open buffer.
+Repeated invocations toggle between the two most recently open buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+(key-chord-define-global "JJ" 'jc/switch-to-previous-buffer)
+
 (use-package popwin
   :ensure t
   :config
@@ -82,6 +113,9 @@
   :ensure t)
 
 (use-package counsel
+  :ensure t)
+
+(use-package smex
   :ensure t)
 
 ;; Ivy
@@ -103,6 +137,8 @@
 ;; Avy
 (use-package avy
   :ensure t
+  :chords (("jj" . avy-goto-char-2)
+           ("jl" . avy-goto-line))
   :bind ("M-s" . avy-goto-char))
 
 ;; General
@@ -120,13 +156,7 @@
          ("M-," . mc/unmark-next-like-this)
          ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
 
-(setq make-backup-files nil)
-
 (delete-selection-mode)
-
-;;(setq whitespace-style '(face trailing tabs))
-
-;;(add-hook 'prog-mode-hook 'whitespace-mode)
 
 (setq tab-width 4)
 
@@ -141,6 +171,12 @@
   :ensure t
   :commands er/expand-region
   :bind ("M-e" . er/expand-region))
+
+(use-package ace-window
+  :ensure t
+  :custom
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  :bind  ("C-x o" . ace-window))
 
 (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
@@ -198,8 +234,7 @@
 
 ;;Programming
 (add-hook 'prog-mode-hook 'show-paren-mode)
-
-(setq show-paren-style 'expression)
+(setq show-paren-style 'mixed)
 
 (use-package rainbow-delimiters
   :ensure t
@@ -209,6 +244,8 @@
 ;; org-mode
 (use-package org
   :ensure t
+  :init
+  (bind-key "C-c a" 'org-agenda)
   :config
   (setq org-return-follows-link t)
   (setq org-babel-clojure-backend 'cider)
@@ -240,6 +277,8 @@
     :commands (org-bullets-mode)
     :init (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
   (use-package org-tree-slide
+    :ensure t)
+  (use-package org-clock-csv
     :ensure t))
 
 ;;Markdown/AsciiDoc
@@ -261,6 +300,24 @@
   (add-hook 'clojurescript-mode-hook 'my-pretty-lambda)
   (setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))"))
 
+(use-package clj-refactor               ; Refactoring utilities
+  :ensure t
+  :defer t
+  :init
+  (defun mu-clojure-mode-hook ()
+    (clj-refactor-mode 1)
+    (yas-minor-mode 1)                ; For adding require/use/import
+    (cljr-add-keybindings-with-prefix "C-c RET"))
+
+  (add-hook 'clojure-mode-hook #'mu-clojure-mode-hook)
+  :config
+  (validate-setq cljr-suppress-middleware-warnings t
+                 cljr-auto-sort-ns t
+                 cljr-favor-prefix-notation
+                 cljr-favor-private-functions)
+  :diminish clj-refactor-mode)
+
+
 ;;HTML
 (use-package web-mode
   :mode ("\\.html$" . web-mode)
@@ -275,6 +332,7 @@
 
 ;; F#
 (use-package fsharp-mode
+  :ensure t
   :init
   (setq inferior-fsharp-program "/usr/bin/fsharpi --readline-")
   (setq fsharp-compiler "/usr/bin/fsharpc"))
@@ -295,16 +353,41 @@
   :ensure t)
 
 ;;Lisp / SBCL
+;; (use-package parinfer
+;;   :ensure t
+;;   :bind
+;;   (("C-," . parinfer-toggle-mode))
+;;   :init
+;;   (progn
+;;     (setq parinfer-extensions
+;;           '(defaults       ; should be included.
+;;             pretty-parens  ; different paren styles for different modes.
+;;             smart-tab      ; C-b & C-f jump positions and smart shift with tab & S-tab.
+;;             smart-yank))   ; Yank behavior depend on mode.
+;;     (add-hook 'clojure-mode-hook #'parinfer-mode)
+;;     (add-hook 'emacs-lisp-mode-hook #'parinfer-mode)
+;;     (add-hook 'common-lisp-mode-hook #'parinfer-mode)
+;;     (add-hook 'scheme-mode-hook #'parinfer-mode)
+;;     (add-hook 'lisp-mode-hook #'parinfer-mode)))
+
 (use-package slime
   :ensure t)
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "sbcl")
 
+;; Git
 ;; Magit
 (use-package magit
   :ensure
   :bind ("C-x g" . magit-status))
-
+;; git-gutter
+(use-package git-gutter
+  :ensure
+  :init (global-git-gutter-mode t))
+;; git-timemachine
+(use-package git-timemachine
+  :ensure)
+ 
 ;; Themes
 (use-package solarized-theme
   :ensure t
@@ -332,3 +415,18 @@
       (progn
 	(global-set-key (kbd "<f11>") 'toggle-dark-light-theme)
 	(load-theme 'solarized-light t))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(aw-keys '(97 115 100 102 103 104 106 107 108) t)
+ '(org-agenda-files '("~/Dropbox/documents/work/GFK/timecard.org"))
+ '(package-selected-packages
+   '(exec-path-from-shell powerline smex use-package-chords git-timemachine git-gutter cider ace-window validate fsharp-mode cheerilee clj-refactor org-clock-csv which-key use-package undo-tree solarized-theme slime rainbow-delimiters popwin plan9-theme pallet org-tree-slide org-bullets multiple-cursors markdown-mode magit intero geiser fancy-narrow expand-region erc-image erc-hl-nicks darktooth-theme counsel company-quickhelp avy ag adoc-mode)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
