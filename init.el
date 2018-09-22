@@ -2,7 +2,7 @@
 (require 'package)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(package-initialize)
+;;(package-initialize)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -10,6 +10,20 @@
 
 (eval-when-compile
   (require 'use-package))
+
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
 (require 'diminish)
 (require 'bind-key)
 
@@ -71,6 +85,7 @@
 (setq undo-tree-auto-save-history t)
 
 ;; UI
+(toggle-frame-maximized)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -79,12 +94,57 @@
 (setq visible-bell 1)
 (blink-cursor-mode -1)
 
-(use-package powerline
+(use-package neotree
   :ensure t
-  :init
-  (powerline-default-theme)
   :config
-  (setq powerline-default-separator 'utf-8))
+  (global-set-key (kbd "C-c d") 'neotree-toggle))
+
+;; Themes
+(use-package solarized-theme
+  :ensure t
+  :config
+  (setq solarized-distinct-fringe-background t)
+  (setq solarized-use-variable-pitch nil)
+  (setq solarized-scale-org-headlines nil)
+  (setq solarized-high-contrast-mode-line t)
+
+  (defcustom default-light-color-theme 'solarized-light
+  "default light theme")
+
+  (defcustom default-dark-color-theme 'solarized-dark
+    "default dark theme")
+
+  (defun toggle-dark-light-theme ()
+    (interactive)
+
+    (let ((is-light (find default-light-color-theme custom-enabled-themes)))
+      (dolist (theme custom-enabled-themes)
+	(disable-theme theme))
+      (load-theme (if is-light default-dark-color-theme default-light-color-theme) t)))
+
+  (if window-system
+      (progn
+	(global-set-key (kbd "<f11>") 'toggle-dark-light-theme)
+	(load-theme 'solarized-light t))))
+
+
+(use-package spaceline
+  :ensure t
+   :init
+  (progn
+      (require 'spaceline-config)
+     (setq powerline-height '18)
+    (setq powerline-default-separator 'wave)
+    (spaceline-emacs-theme)))
+
+;;  (use-package eyeliner
+;;    :straight (eyeliner :type git
+;;                        :host github
+;;                        :repo "dustinlacewell/eyeliner")
+;;    :config
+;;    (require 'eyeliner)
+;;    (eyeliner/install))
+
 
 ;; chords
 (use-package use-package-chords
@@ -147,8 +207,8 @@
 
 (use-package multiple-cursors
   :ensure t
-  :bind (("M-." . mc/mark-next-like-this)
-         ("M-," . mc/unmark-next-like-this)
+  :bind (("M->" . mc/mark-next-like-this)
+         ("M-<" . mc/unmark-next-like-this)
          ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
 
 (delete-selection-mode)
@@ -206,6 +266,7 @@
   :ensure t
   :init
   (load "~/.ercpass")
+  (setq erc-nick "maacl")
   :config
   (use-package erc-hl-nicks
     :ensure t
@@ -351,6 +412,15 @@
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "sbcl")
 
+;;(use-package sly
+;;  :ensure t)
+
+;;Nim
+(use-package nim-mode
+  :ensure t
+  :config
+  (add-hook 'nim-mode-hook 'nimsuggest-mode))
+
 ;; Git
 ;; Magit
 (use-package magit
@@ -363,31 +433,19 @@
 ;; git-timemachine
 (use-package git-timemachine
   :ensure)
- 
-;; Themes
-(use-package solarized-theme
-  :ensure t
-  :config
-  (setq solarized-distinct-fringe-background t)
-  (setq solarized-use-variable-pitch nil)
-  (setq solarized-scale-org-headlines nil)
-  (setq solarized-high-contrast-mode-line t)
 
-  (defcustom default-light-color-theme 'solarized-light
-  "default light theme")
 
-  (defcustom default-dark-color-theme 'solarized-dark
-    "default dark theme")
-
-  (defun toggle-dark-light-theme ()
-    (interactive)
-
-    (let ((is-light (find default-light-color-theme custom-enabled-themes)))
-      (dolist (theme custom-enabled-themes)
-	(disable-theme theme))
-      (load-theme (if is-light default-dark-color-theme default-light-color-theme) t)))
-
-  (if window-system
-      (progn
-	(global-set-key (kbd "<f11>") 'toggle-dark-light-theme)
-	(load-theme 'solarized-light t))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(aw-keys '(97 115 100 102 103 104 106 107 108))
+ '(package-selected-packages
+   '(use-package spaceline-all-the-icons nim-mode neotree which-key validate use-package-chords undo-tree solarized-theme smex slime rainbow-delimiters powerline popwin plan9-theme org-tree-slide org-clock-csv org-bullets markdown-mode magit intero git-timemachine git-gutter geiser fsharp-mode fancy-narrow expand-region exec-path-from-shell erc-image erc-hl-nicks diminish darktooth-theme counsel clj-refactor cask ag adoc-mode ace-window)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

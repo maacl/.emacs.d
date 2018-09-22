@@ -1,16 +1,55 @@
 
 ;; ----- smex-history -----
 (
- powerline-reset
- ag
- cd
- 5x5
- arp
- dbx
- dig
+ org-clock-goto
+ sly
+ package-install
+ menu-bar-mode
+ recover-this-file
+ slime
+ slime-eval-buffer
 )
 
 ;; ----- smex-data -----
 (
  (powerline-reset . 1)
+ (cljr-add-project-dependency . 1)
+ (cljr-add-import-to-ns . 3)
+ (cljr-add-require-to-ns . 2)
+ (menu-bar-mode . 8)
+ (cider-load-file . 1)
+ (cider-load-buffer . 6)
+ (visible-mode . 2)
+ (fill-region . 1)
+ (fill-paragraph . 1)
+ (erc . 5)
+ (visual-line-mode . 1)
+ (comment-region . 8)
+ (org-clock-cancel . 1)
+ (magit-log . 1)
+ (magit-status . 1)
+ (ag-files . 1)
+ (org-clock-report . 1)
+ (org-export-dispatch . 1)
+ (cider-jack-in . 1)
+ (cider-eval-buffer . 1)
+ (other-window . 2)
+ (uncomment-region . 5)
+ (package-list-packages . 2)
+ (nim-mode . 3)
+ (eval-buffer . 2)
+ (nimsuggest-mode . 2)
+ (nim-goto-sym . 2)
+ (cider-interrupt . 2)
+ (version . 1)
+ (cljr-update-project-dependencies . 1)
+ (revert-buffer . 5)
+ (goto-line . 1)
+ (redo . 1)
+ (slime . 9)
+ (recover-this-file . 2)
+ (slime-eval-buffer . 6)
+ (package-install . 1)
+ (sly . 1)
+ (org-clock-goto . 1)
 )

@@ -3,6 +3,7 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+	nim-electric-backspace
 	))
 
 (setq mc/cmds-to-run-once
